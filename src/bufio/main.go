@@ -7,17 +7,17 @@ import (
 )
 
 func main() {
-	// readSlice()
-	//readBytes()
+	readSlice()
+	readBytes()
 	//readString()
-	readLine()
+	//readLine()
 }
 
 func readSlice() {
 	// base read
 	reader := bufio.NewReader(strings.NewReader("this is a strings\n and with return.\n"))
 	line, _ := reader.ReadSlice('\n')
-	fmt.Printf("the line is '%s'\n", line)
+	fmt.Printf("the line is '%s'\n", line[:len(line)+5])
 	line, _ = reader.ReadSlice('\n')
 	fmt.Printf("the other line is '%s'\n", line)
 
