@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 )
 
@@ -11,7 +12,9 @@ func main() {
 	//TestContains()
 	//TestCount()
 	//TestFields()
-	TestSplitX()
+	//TestSplitX()
+	//TestXFix()
+	TestIndexX()
 
 }
 
@@ -100,4 +103,29 @@ func TestSplitX() {
 	fmt.Printf("%q\n", strings.Split("a man a plan a canal panama", "a "))
 	fmt.Printf("%q\n", strings.Split(" xyz ", ""))
 	fmt.Printf("%q\n", strings.Split("", "Bernardo O'Higgins"))
+}
+
+func TestXFix() {
+	s := "中国的边境是万里长城吗,zzz"
+	fmt.Println(strings.HasPrefix(s, "中"))
+	fmt.Println(strings.HasSuffix(s, "zzz"))
+	fmt.Println(strings.HasSuffix(s, ""))
+}
+
+func TestIndexX() {
+	s := "中国的边境是万里长城吗,zzz"
+	s1 := "长"
+	fmt.Println(s, s1, strings.Index(s, s1))
+	fmt.Println(s, "z", strings.IndexByte(s, byte('z')))
+
+	// todo: 中文index问题需要再调试
+	s2 := strconv.QuoteToASCII(s1)
+	s2 = s2[1 : len(s2)-1]
+	s2 = strings.Trim(s2, "\\u")
+	fmt.Println(s2)
+	u, _ := strconv.ParseInt(s2, 16, 32)
+	fmt.Println(s, s1, strings.IndexRune(s, rune(u)))
+	fmt.Println(s, s1, strings.IndexFunc(s, func(c rune) bool {
+		return c == rune(u)
+	}))
 }
