@@ -8,7 +8,11 @@ import (
 func main() {
 	//TestCompare()
 	//TestEqualFold()
-	TestContains()
+	//TestContains()
+	//TestCount()
+	//TestFields()
+	TestSplitX()
+
 }
 
 func TestCompare() {
@@ -58,4 +62,42 @@ func TestContains() {
 	//fmt.Printf("%s", strconv.QuoteToASCII("好"))
 	s3 := rune(0x597d)
 	fmt.Println("ContainRune", s1, s2, strings.ContainsRune(s1, s3))
+}
+
+func TestCount() {
+	s1 := "Golang 基础库 调试"
+	s2 := " 调试"
+	fmt.Println("Count: ", s1, s2, strings.Count(s1, s2))
+
+	fmt.Println(strings.Count("cheese", "e"))
+	fmt.Println(len("谷歌中国"))
+	// todo: if substr是空，则返回Unicode个数+1
+	fmt.Println(strings.Count("谷歌中国", ""))
+
+}
+
+func TestFields() {
+	s := "中共|中央=人民广播* 电视台"
+	fs := strings.FieldsFunc(s, func(c rune) bool {
+		s := string(c)
+		if s == "|" || s == "=" || s == " " || s == "*" {
+			return true
+		} else {
+			return false
+		}
+	})
+	fmt.Println(s, fs, strings.Fields(s))
+}
+
+func TestSplitX() {
+	s := "中共|中央|人民|广播电视台"
+	fmt.Println(s, strings.Split(s, "|"))
+	fmt.Println(s, strings.SplitN(s, "|", 2))
+	fmt.Println(s, strings.SplitAfter(s, "|"))
+	fmt.Println(s, strings.SplitAfterN(s, "|", 2))
+
+	fmt.Printf("%q\n", strings.Split("a,b,c", ","))
+	fmt.Printf("%q\n", strings.Split("a man a plan a canal panama", "a "))
+	fmt.Printf("%q\n", strings.Split(" xyz ", ""))
+	fmt.Printf("%q\n", strings.Split("", "Bernardo O'Higgins"))
 }
