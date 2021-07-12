@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
+	"unicode"
 )
 
 func main() {
@@ -14,7 +15,14 @@ func main() {
 	//TestFields()
 	//TestSplitX()
 	//TestXFix()
-	TestIndexX()
+	//TestIndexX()
+	//TestJoin()
+	//TestRepeat()
+	//TestMap()
+	//TestReplace()
+	//TestUpperLower()
+	//TestTitle()
+	TestTrim()
 
 }
 
@@ -128,4 +136,90 @@ func TestIndexX() {
 	fmt.Println(s, s1, strings.IndexFunc(s, func(c rune) bool {
 		return c == rune(u)
 	}))
+}
+
+func TestJoin() {
+	s1 := []string{"你好", "Golang", "!"}
+	fmt.Println(strings.Join(s1, " "))
+}
+
+func TestRepeat() {
+	s1 := "Hello"
+	fmt.Println(s1 + strings.Repeat(" 好吗 ", 3))
+}
+
+func TestMap() {
+	s := "你好xs& 我们都8_43在这里等.你。。。"
+	s2 := strings.Map(func(c rune) rune {
+		if unicode.Is(unicode.Han, c) {
+			return c
+		} else {
+			return -1
+		}
+	}, s)
+	fmt.Println("过滤汉字", s, s2)
+	s = "abCdEfgHI"
+	s2 = strings.Map(func(c rune) rune {
+		switch {
+		case c >= 'A' && c <= 'Z':
+			return c + 32
+		case c >= 'a' && c <= 'z':
+			return c
+		default:
+			return -1
+		}
+	}, s)
+	fmt.Println("大写转小写，过滤非法字符", s, s2)
+}
+
+func TestReplace() {
+	fmt.Println("oink oink oink", "|", "k", "|", "ky", "|", strings.Replace("oink oink oink", "k", "ky", 2))
+	fmt.Println("oink oink oink", "|", "oink", "|", "moo", "|", strings.Replace("oink oink oink", "oink", "moo", -1))
+	fmt.Println("oink oink oink", "|", "oink", "|", "moo", "|", strings.Replace("oink oink oink", "oink", "moo", 0))
+	fmt.Println("oink oink oink", "|", "oink", "|", "moo", "|", strings.ReplaceAll("oink oink oink", "oink", "moo"))
+}
+
+func TestUpperLower() {
+	fmt.Println(strings.ToLower("HELLO WORLD"))
+	fmt.Println(strings.ToLower("Ā Á Ǎ À"))
+	fmt.Println(strings.ToLowerSpecial(unicode.TurkishCase, "壹"))
+	fmt.Println(strings.ToLowerSpecial(unicode.TurkishCase, "HELLO WORLD"))
+	fmt.Println(strings.ToLower("Önnek İş"))
+	fmt.Println(strings.ToLowerSpecial(unicode.TurkishCase, "Önnek İş"))
+
+	fmt.Println(strings.ToUpper("hello world"))
+	fmt.Println(strings.ToUpper("ā á ǎ à"))
+	fmt.Println(strings.ToUpperSpecial(unicode.TurkishCase, "一"))
+	fmt.Println(strings.ToUpperSpecial(unicode.TurkishCase, "hello world"))
+	fmt.Println(strings.ToUpper("örnek iş"))
+	fmt.Println(strings.ToUpperSpecial(unicode.TurkishCase, "örnek iş"))
+}
+
+func TestTitle() {
+	fmt.Println(strings.Title("hElLo wOrLd"))
+	fmt.Println(strings.ToTitle("hElLo wOrLd"))
+	fmt.Println(strings.ToTitleSpecial(unicode.TurkishCase, "hElLo wOrLd"))
+	fmt.Println(strings.Title("āáǎà ōóǒò êēéěè"))
+	fmt.Println(strings.ToTitle("āáǎà ōóǒò êēéěè"))
+	fmt.Println(strings.ToTitleSpecial(unicode.TurkishCase, "āáǎà ōóǒò êēéěè"))
+	fmt.Println(strings.Title("dünyanın ilk borsa yapısı Aizonai kabul edilir"))
+	fmt.Println(strings.ToTitle("dünyanın ilk borsa yapısı Aizonai kabul edilir"))
+	fmt.Println(strings.ToTitleSpecial(unicode.TurkishCase, "dünyanın ilk borsa yapısı Aizonai kabul edilir"))
+}
+
+func TestTrim() {
+	x := "!!!@@@你好,!@#$ Gophers###$$$"
+	fmt.Println(strings.Trim(x, "@#$!%^&*()_+=-"))
+	fmt.Println(strings.TrimLeft(x, "@#$!%^&*()_+=-"))
+	fmt.Println(strings.TrimRight(x, "@#$!%^&*()_+=-"))
+	fmt.Println(strings.TrimSpace(" \t\n Hello, Gophers \n\t\r\n"))
+	fmt.Println(strings.TrimPrefix(x, "!"))
+	fmt.Println(strings.TrimSuffix(x, "$"))
+
+	f := func(r rune) bool {
+		return !unicode.Is(unicode.Han, r) // 非汉字返回 true
+	}
+	fmt.Println(strings.TrimFunc(x, f))
+	fmt.Println(strings.TrimLeftFunc(x, f))
+	fmt.Println(strings.TrimRightFunc(x, f))
 }
