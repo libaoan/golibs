@@ -22,7 +22,8 @@ func main() {
 	//TestReplace()
 	//TestUpperLower()
 	//TestTitle()
-	TestTrim()
+	//TestTrim()
+	TestReplacer()
 
 }
 
@@ -222,4 +223,9 @@ func TestTrim() {
 	fmt.Println(strings.TrimFunc(x, f))
 	fmt.Println(strings.TrimLeftFunc(x, f))
 	fmt.Println(strings.TrimRightFunc(x, f))
+}
+
+func TestReplacer() {
+	r := strings.NewReplacer("%", "%%", "point", "points")
+	fmt.Println(r.Replace("this is %50 point in the trade"))
 }
