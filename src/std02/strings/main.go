@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 	"strconv"
 	"strings"
 	"unicode"
@@ -23,7 +24,9 @@ func main() {
 	//TestUpperLower()
 	//TestTitle()
 	//TestTrim()
-	TestReplacer()
+	//TestReplacer()
+	//TestReader()
+	TestBuilder()
 
 }
 
@@ -228,4 +231,29 @@ func TestTrim() {
 func TestReplacer() {
 	r := strings.NewReplacer("%", "%%", "point", "points")
 	fmt.Println(r.Replace("this is %50 point in the trade"))
+	n, err := r.WriteString(os.Stdout, "this is %50 point in the trade")
+	if err != nil {
+		fmt.Fprint(os.Stdout, err)
+	}
+	fmt.Println("\n", n, "bytes write to", os.Stdout)
+}
+
+func TestReader() {
+	r := strings.NewReader("我们都用Golang语言！")
+	n, err := r.WriteTo(os.Stdout)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Printf("\n %d bytes write to %v", n, os.Stdout)
+}
+
+func TestBuilder() {
+	b := strings.Builder{}
+	fmt.Println(b.Cap(), b.Len(), b.String())
+	b.WriteString("this is a strings")
+	fmt.Println(b.Cap(), b.Len(), b.String())
+	b.WriteRune([]rune("汉字")[0])
+	fmt.Println(b.Cap(), b.Len(), b.String())
+	b.Write([]byte("中文句子"))
+	fmt.Println(b.Cap(), b.Len(), b.String())
 }
