@@ -49,6 +49,22 @@ func main() {
 	sort.Sort(sort.Reverse(sort.Reverse(sort.Reverse(stus))))
 	fmt.Println("Reverse Sorted:\n\t", stus)
 
+	// Search
 	sort.Sort(stus)
 	fmt.Println("Search Greate Than 90:\n\t", stus[sort.Search(len(stus), func(i int) bool { return stus[i].score >= 91 })])
+
+	s := []int{5, 2, 6, 3, 1, 4} // 未排序的切片数据
+	sort.Ints(s)
+	fmt.Println(s) // 将会输出[1 2 3 4 5 6]
+
+	s = []int{5, 2, 6, 3, 1, 4} // 未排序的切片数据
+	sort.Sort(sort.Reverse(sort.IntSlice(s)))
+	fmt.Println(s) // 将会输出[6 5 4 3 2 1]
+	// 注意，SearchInts() 的使用条件为：**切片 a 已经升序排序** 以下是一个错误使用的例子：
+	fmt.Println(sort.SearchInts(s, 2)) // 将会输出 0 而不是 1
+	// 正确的调用
+	sort.Ints(s)
+	fmt.Println(s)
+	fmt.Println(sort.SearchInts(s, 2))
+
 }
